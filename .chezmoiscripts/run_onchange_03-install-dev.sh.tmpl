@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+export DEBIAN_FRONTEND=noninteractive
 
 # Dev tools — re-runs when this script changes
 # tools-hash: node fnm claude-code gh doctl cco vercel supabase uv python
@@ -9,11 +10,16 @@ echo "==> Installing dev tools..."
 # --- Node.js via fnm ---
 if ! command -v fnm &>/dev/null; then
   echo "  -> Installing fnm..."
-  curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+  FNM_DIR="$HOME/.local/share/fnm"
+  mkdir -p "$FNM_DIR"
+  curl -fsSL "https://github.com/Schniz/fnm/releases/latest/download/fnm-linux.zip" -o /tmp/fnm.zip
+  unzip -oq /tmp/fnm.zip -d "$FNM_DIR"
+  chmod +x "$FNM_DIR/fnm"
+  rm -f /tmp/fnm.zip
 fi
 export PATH="$HOME/.local/share/fnm:$PATH"
-eval "$(fnm env)"
-fnm install 22 --cwd /tmp
+eval "$(fnm env --shell bash)"
+fnm install 22
 fnm default 22
 
 # --- Claude Code ---
