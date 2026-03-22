@@ -1,0 +1,27 @@
+[user]
+  name = {{ .name }}
+  email = {{ .email }}
+
+[init]
+  defaultBranch = main
+
+[pull]
+  rebase = true
+
+[push]
+  autoSetupRemote = true
+
+[core]
+  editor = nano
+  autocrlf = input
+
+[alias]
+  st = status
+  co = checkout
+  br = branch
+  ci = commit
+  lg = log --oneline --graph --decorate -20
+  last = log -1 --stat
+
+[credential "https://github.com"]
+  helper = !/usr/bin/gh auth git-credential

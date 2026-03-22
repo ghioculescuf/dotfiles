@@ -1,0 +1,22 @@
+#!/bin/bash
+set -euo pipefail
+
+# Base system packages — runs once per machine
+echo "==> Installing base packages..."
+
+sudo apt-get update -qq
+sudo apt-get install -y -qq \
+  build-essential \
+  curl \
+  wget \
+  git \
+  jq \
+  unzip \
+  ca-certificates \
+  gnupg \
+  lsb-release \
+  software-properties-common \
+  apt-transport-https \
+  > /dev/null
+
+echo "==> Base packages installed."

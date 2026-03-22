@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+
+# Infrastructure tools — re-runs when this script changes
+# tools-hash: tailscale docker
+
+echo "==> Installing infrastructure tools..."
+
+# --- Tailscale ---
+if ! command -v tailscale &>/dev/null; then
+  echo "  -> Installing Tailscale..."
+  curl -fsSL https://tailscale.com/install.sh | sh
+fi
+
+# --- Docker (cloud VMs only, skip on WSL which has Docker Desktop) ---
+{{ if .is_cloud }}
+if ! command -v docker &>/dev/null; then
+  echo "  -> Installing Docker..."
+  curl -fsSL https://get.docker.com | sh
+  sudo usermod -aG docker "$(whoami)" || true
+fi
+{{ end }}
+
+echo "==> Infrastructure tools installed."

@@ -1,0 +1,21 @@
+{{- $name := "Adrian Ghioculescu" -}}
+{{- $email := "ghioculescuflorinadrian@gmail.com" -}}
+
+{{- $isWsl := false -}}
+{{- $isCloud := false -}}
+{{- $hostname := .chezmoi.hostname -}}
+
+{{- if stat "/proc/sys/fs/binfmt_misc/WSLInterop" -}}
+{{-   $isWsl = true -}}
+{{- end -}}
+
+{{- if or (eq $hostname "claude-agents") (env "DIGITALOCEAN_ACCESS_TOKEN") -}}
+{{-   $isCloud = true -}}
+{{- end -}}
+
+[data]
+  name = {{ $name | quote }}
+  email = {{ $email | quote }}
+  is_wsl = {{ $isWsl }}
+  is_cloud = {{ $isCloud }}
+  hostname = {{ $hostname | quote }}

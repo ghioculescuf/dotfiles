@@ -1,0 +1,19 @@
+#cloud-config
+# Usage: doctl compute droplet create my-vm \
+#   --user-data-file cloud-init.yml \
+#   --region fra1 --size s-1vcpu-1gb --image ubuntu-24-04-x64
+
+users:
+  - name: adrian
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-ed25519 YOUR_PUBLIC_KEY_HERE
+
+package_update: true
+packages:
+  - curl
+  - git
+
+runcmd:
+  - su - adrian -c 'sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ghioculescuf'

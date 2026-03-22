@@ -1,0 +1,33 @@
+#!/bin/bash
+set -euo pipefail
+
+# CLI tools — re-runs when this script changes
+# tools-hash: sha256sum of package list below
+# ripgrep tmux mosh htop bat fd-find fzf bubblewrap tree
+
+echo "==> Installing CLI tools..."
+
+sudo apt-get update -qq
+sudo apt-get install -y -qq \
+  ripgrep \
+  tmux \
+  mosh \
+  htop \
+  bat \
+  fd-find \
+  fzf \
+  bubblewrap \
+  tree \
+  > /dev/null
+
+# Symlink bat → batcat (Ubuntu names it batcat)
+if command -v batcat &>/dev/null && ! command -v bat &>/dev/null; then
+  sudo ln -sfn "$(which batcat)" /usr/local/bin/bat
+fi
+
+# Symlink fd → fdfind (Ubuntu names it fdfind)
+if command -v fdfind &>/dev/null && ! command -v fd &>/dev/null; then
+  sudo ln -sfn "$(which fdfind)" /usr/local/bin/fd
+fi
+
+echo "==> CLI tools installed."

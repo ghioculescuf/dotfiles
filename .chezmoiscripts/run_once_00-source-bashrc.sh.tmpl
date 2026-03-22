@@ -1,0 +1,14 @@
+#!/bin/bash
+set -euo pipefail
+
+# Ensure ~/.bashrc.d/ scripts are sourced from .bashrc — runs once per machine
+
+BASHRC="$HOME/.bashrc"
+MARKER="# chezmoi: source bashrc.d"
+
+if ! grep -qF "$MARKER" "$BASHRC" 2>/dev/null; then
+  echo "" >> "$BASHRC"
+  echo "$MARKER" >> "$BASHRC"
+  echo 'for f in ~/.bashrc.d/*.sh; do [ -r "$f" ] && source "$f"; done' >> "$BASHRC"
+  echo "==> Added bashrc.d sourcing to .bashrc"
+fi
